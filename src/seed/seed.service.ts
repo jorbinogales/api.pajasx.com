@@ -4,18 +4,18 @@ import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class SeedService {
-  
-  constructor(private prisma: PrismaService){}
+  constructor(private prisma: PrismaService) {}
 
   async runSeed() {
     try {
       for (let page = 1; page <= 10000; page++) {
         try {
-          const response = await axios.get(`https://api.adultdatalink.com/xvideos/feed?page=${page}`);
+          const response = await axios.get(
+            `https://api.adultdatalink.com/xvideos/feed?page=${page}`,
+          );
           const videos = response.data;
 
           for (const item of videos) {
-
             await this.prisma.video.create({
               data: {
                 name: item.name,
@@ -33,7 +33,6 @@ export class SeedService {
 
           // Espera 500ms entre páginas para evitar bloqueo del servidor
           await this.sleep(500);
-
         } catch (error) {
           console.error(`❌ Error en la página ${page}:`, error.message);
         }
@@ -48,14 +47,14 @@ export class SeedService {
   toSlug(name: string): string {
     return name
       .toLowerCase()
-      .replace(/[\s\-]+/g, '_')     // reemplaza espacios y guiones por "_"
-      .replace(/[^\w_]/g, '')       // elimina cualquier carácter que no sea letra, número o "_"
+      .replace(/[\s\-]+/g, '_') // reemplaza espacios y guiones por "_"
+      .replace(/[^\w_]/g, '') // elimina cualquier carácter que no sea letra, número o "_"
       .trim();
   }
 
   // Función de espera
   private sleep(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   // Función para parsear las vistas
