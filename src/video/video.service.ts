@@ -49,7 +49,7 @@ export class VideoService {
         skip: skip,
         take: limit,
         orderBy: {
-          id: 'desc',
+          createdAt: 'desc',
         },
       }),
       this.prisma.video.count({
@@ -152,9 +152,7 @@ export class VideoService {
         where,
         skip,
         take: VIDEO_POR_PAGE,
-        orderBy: {
-          id: 'desc',
-        },
+        orderBy: { createdAt: 'desc' },
       }),
       this.prisma.video.count({ where }),
     ]);
